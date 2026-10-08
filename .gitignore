@@ -1,0 +1,11 @@
+# Stack build output
+.stack-work/
+
+# GHC build artifacts (from running ghc directly)
+*.o
+*.hi
+*.dyn_o
+*.dyn_hi
+
+# macOS
+.DS_Store
