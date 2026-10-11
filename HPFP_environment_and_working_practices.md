@@ -9,6 +9,8 @@ The guiding principle is:
 
 > Keep the environment faithful to the book while keeping the editor mechanically predictable. Type and format the Haskell manually; let GHC and GHCi provide feedback.
 
+For Haskell's layout (indentation) rules and the approach to typing code by hand, see `HPFP_layout_and_formatting.md`.
+
 ---
 
 ## 1. HPFP toolchain
@@ -167,7 +169,11 @@ Use this Haskell language override:
     "editor.autoIndent": "keep",
     "editor.formatOnType": false,
     "editor.formatOnPaste": false,
-    "editor.formatOnSave": false
+    "editor.formatOnSave": false,
+    "editor.renderWhitespace": "all",
+    "editor.guides.indentation": true,
+    "editor.guides.highlightActiveIndentation": true,
+    "files.trimTrailingWhitespace": true
 }
 ```
 
@@ -244,6 +250,36 @@ The editor therefore does not decide Haskell layout. The programmer does.
 While learning from HPFP, formatting should remain visible work rather than an automatic transformation performed by the editor.
 
 This makes Haskell's layout rules something to learn directly.
+
+#### Make layout visible
+
+```json
+"editor.renderWhitespace": "all",
+"editor.guides.indentation": true,
+"editor.guides.highlightActiveIndentation": true
+```
+
+Haskell's layout rule depends on exact columns, so spacing should be visible rather than guessed.
+
+`renderWhitespace` shows every space as a faint dot, making it possible to count columns and check whether two lines align.
+
+`guides.indentation` draws a vertical guide every four columns (every `tabSize`). With the chosen layout style (block keyword at the end of the line, block on the next line), every block edge falls on a multiple of four, so the guides mark the edges. In the book's inline style (e.g. `where x = …`), edges can land between guides.
+
+`highlightActiveIndentation` brightens the guide for the block containing the cursor.
+
+The `Ln, Col` position in the status bar uses the same 1-based numbering as GHC's `file:line:col` error positions.
+
+See `HPFP_layout_and_formatting.md` for the layout rule itself.
+
+#### Trim trailing whitespace on save
+
+```json
+"files.trimTrailingWhitespace": true
+```
+
+Trailing spaces are invisible and meaningless in Haskell. Removing them on save keeps files clean.
+
+This only removes spaces at the ends of lines. Leading indentation is untouched, so it never changes the program's layout. It is not a formatter and does not conflict with the no-automatic-formatting choice.
 
 ---
 
@@ -362,6 +398,8 @@ Add or remove indentation yourself.
 
 Treat four spaces as the normal deliberate indentation step, while remembering that Haskell's layout rule is semantic rather than a rule that every nested construct must literally use four spaces.
 
+See `HPFP_layout_and_formatting.md` for how the layout rule works and the chosen style (block keyword at the end of the line, block on the next line).
+
 ### Do not let the editor repair the program
 
 For now:
@@ -410,6 +448,7 @@ The working arrangement is conceptually:
 ~/dev/HPFP/
 ├── stack.yaml          # lts-13.24 / GHC 8.6.5
 ├── HPFP_environment_and_working_practices.md
+├── HPFP_layout_and_formatting.md
 ├── Haskell Programming from First Principles.pdf
 ├── 02/
 │   └── ...
